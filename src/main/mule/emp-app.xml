@@ -26,13 +26,37 @@ payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="bc8036f4-a764-47d7-a024-f549bf68880d" message="Getting employee details"/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f8338955-4cfb-4cc3-9d8c-893ed9c2f490" type="DB:CONNECTIVITY">
+				<logger level="INFO" doc:name="Logger" doc:id="3e9b8b1a-736a-4bb6-ba95-b0142fb79fd7" message="Database Connectivity Error...."/>
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c8888200-04a2-4225-a3ae-8e3abae0d1e9" type="ANY">
+				<ee:transform doc:name="Transform Message" doc:id="1d0a67cf-3b8b-4dc4-9a69-e2e971cec26d" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message" : "Sql syntax error"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-continue>
+		</error-handler>
 	</flow>
 	<flow name="postEmployee" doc:id="ea61e68f-6a06-4fa8-8163-b1d2d1abf3bb" >
 		<http:listener doc:name="Listener" doc:id="08306a0e-a773-4104-a566-f61a56677ced" config-ref="HTTP_Listener_config" path="/emp" allowedMethods="POST"/>
-		<db:insert doc:name="Insert" doc:id="665dcc6f-1099-4957-8ecd-bc85e0ad5caf" config-ref="Database_Config">
-			<db:sql ><![CDATA[insert into employee values(:id, :name, :salary)]]></db:sql>
-			<db:input-parameters ><![CDATA[#[{"id": payload.id, "name": payload.name, "salary": payload.salary}]]]></db:input-parameters>
+		<try doc:name="Try" doc:id="2b100857-00ec-4c92-b448-6d0e9f60c5b5" >
+			<db:insert doc:name="Insert" doc:id="665dcc6f-1099-4957-8ecd-bc85e0ad5caf" config-ref="Database_Config">
+			<db:sql><![CDATA[insert into employee values(:id, :name, :salary)]]></db:sql>
+			<db:input-parameters><![CDATA[#[{"id": payload.id, "name": payload.name, "salary": payload.salary}]]]></db:input-parameters>
 		</db:insert>
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="58d8fbae-dc95-4db9-9640-324834f0d18a" type="ANY">
+					<logger level="INFO" doc:name="Logger" doc:id="e00fa75c-5ec7-43bc-a5c0-8e3833b3985e" message="Error handled at processor level.."/>
+				</on-error-continue>
+			</error-handler>
+		</try>
 		<ee:transform doc:name="Transform Message" doc:id="48e011a5-6ee8-400d-987b-f7e761c028d0" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
