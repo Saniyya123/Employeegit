@@ -25,7 +25,7 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="bc8036f4-a764-47d7-a024-f549bf68880d" />
+		<logger level="INFO" doc:name="Logger" doc:id="bc8036f4-a764-47d7-a024-f549bf68880d" message="Getting employee details"/>
 	</flow>
 	<flow name="postEmployee" doc:id="ea61e68f-6a06-4fa8-8163-b1d2d1abf3bb" >
 		<http:listener doc:name="Listener" doc:id="08306a0e-a773-4104-a566-f61a56677ced" config-ref="HTTP_Listener_config" path="/emp" allowedMethods="POST"/>
@@ -43,6 +43,6 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="3bbd6407-a4f1-4a7d-8d45-384619324e43" />
+		<logger level="INFO" doc:name="Logger" doc:id="3bbd6407-a4f1-4a7d-8d45-384619324e43" message="Posting employee details"/>
 	</flow>
 </mule>
