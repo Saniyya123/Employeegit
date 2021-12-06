@@ -31,16 +31,16 @@
 				<extensions>true</extensions>
 				<configuration>
 				<cloudHubDeployment>
-		          <uri>https://anypoint.mulesoft.com</uri>
-		          <muleVersion>4.4.0</muleVersion>
-		          <username>Saniyya_Siddiqa</username>
-		          <password>Saniyya@2000</password>
-		          <applicationName>Employeejob-ws</applicationName>
-		          <environment>Sandbox</environment>
-		          <workers>1</workers> 
-		          <workerType>MICRO</workerType>
-		          <objectStoreV2>true</objectStoreV2>
-		        </cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${muleVersion}</muleVersion>
+						<username>${username}</username>
+						<password>${password}</password>
+						<applicationName>${applicationName}</applicationName>
+						<environment>${environment}</environment>
+						<workers>${workers}</workers>
+						<workerType>${workerType}</workerType>
+						<objectStoreV2>true</objectStoreV2>
+				</cloudHubDeployment>
 					<sharedLibraries>
 						<sharedLibrary>
 							<groupId>mysql</groupId>
